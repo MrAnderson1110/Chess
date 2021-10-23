@@ -1,0 +1,8 @@
+module qmlplugins
+ColorizedImage 1.0 qml/ColorizedImage.qml
+ChessBoard 1.0 qml/ChessBoard.qml
+PieceStyle 1.0 qml/PieceStyle.qml
+GridCell 1.0 qml/GridCell.qml
+MoveManipulator 1.0 qml/MoveManipulator.qml
+History 1.0 qml/History.qml
+plugin qmlplugins
