@@ -57,6 +57,16 @@ void BasicPiece::addFigntMove(const FightPair &move)
     m_fightMoves << move;
 }
 
+FightPair BasicPiece::getFightPair(const Move &move)
+{
+    for(const FightPair &fightMove : qAsConst(m_fightMoves))
+        if(fightMove.second == move) {
+            return fightMove;
+        }
+
+    return { nullptr, INVALID_POINT };
+}
+
 void BasicPiece::removeFightMove(const Move &move)
 {
     FightPair moveForRemote = { nullptr, INVALID_POINT };
@@ -111,8 +121,17 @@ void BasicPiece::setAvailableMoves(const AvailableMoves &moves)
 
 void BasicPiece::removeAvailableMove(const Move &move)
 {
-    for(Moves &moves : m_availableMoves)
-        moves.removeOne(move);
+    AvailableMoves::iterator it = m_availableMoves.begin();
+    while(it != m_availableMoves.end()) {
+        if(it.value().contains(move))
+            it.value().removeOne(move);
+
+        if(it.value().isEmpty())
+            it = m_availableMoves.erase(it);
+
+        if(it != m_availableMoves.end())
+            ++it;
+    }
 }
 
 void BasicPiece::addAvailableMove(const Move &move, MoveDirection dir)

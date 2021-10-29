@@ -78,6 +78,7 @@ public:
 
     Snapshot *pop();
     void push(Snapshot *snapshot);
+    int size() const;
 
 private:
     explicit AppHistory(QObject *parent = nullptr);

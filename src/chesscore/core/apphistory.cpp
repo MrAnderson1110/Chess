@@ -79,6 +79,11 @@ void AppHistory::push(Snapshot *snapshot)
     endInsertRows();
 }
 
+int AppHistory::size() const
+{
+    return m_history.size();
+}
+
 AppHistory::AppHistory(QObject *parent)
     : QAbstractListModel(parent)
     , m_history()
@@ -302,10 +307,10 @@ QString Snapshot::move() const
 
     QString str = QString("%1%2").arg(pieceName).arg(move);
 
-    if(appState->checkToBlack() || appState->checkToWhite())
-        str.append("+");
-    else if(appState->mateToBlack() || appState->mateToWhite())
+    if(appState->mateToBlack() || appState->mateToWhite())
         str.append("#");
+    else if(appState->checkToBlack() || appState->checkToWhite())
+        str.append("+");
 
     return str;
 }

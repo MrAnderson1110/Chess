@@ -82,6 +82,7 @@ void FilterVisitor::visit(BasicPiece *base)
 
         Move minValue = Move(base->rowIndex(), base->columnIndex());
         Move maxValue = *std::max_element(it->begin(), it->end(), compFunc);
+        bool available = true;
         while(minValue != maxValue) {
             // Следующее значение в порядке обхода по данному направлению
             minValue = get_next(minValue, maxValue, it.value(), compFunc);
@@ -89,15 +90,19 @@ void FilterVisitor::visit(BasicPiece *base)
                 break;
 
             BasicPiece *piece = board->cell(minValue.x(), minValue.y())->piece();
-            if(piece != nullptr && piece->command() == base->command()) {
-                predictedMoves << minValue;
+            if(piece != nullptr && piece->command() == base->command())
                 break;
-            }
 
-            filteredMoves[it.key()] << minValue;
+            if(available)
+                filteredMoves[it.key()] << minValue;
+
             predictedMoves << minValue;
-            if(piece != nullptr)
-                break;
+            if(piece != nullptr) {
+                available = false;
+
+                if(piece->type() != BasicPiece::King)
+                    break;
+            }
         }
     }
     base->setAvailableMoves(filteredMoves);
@@ -107,6 +112,9 @@ void FilterVisitor::visit(BasicPiece *base)
 void FilterVisitor::visit(Pawn *pawn)
 {
     int direction = pawn->command();
+    if(pawn->board()->inverted())
+        direction *= -1;
+
     int nextRow = pawn->rowIndex() + direction;
     if(nextRow < 0 || nextRow >= 8)
         return;
@@ -173,11 +181,10 @@ void FilterVisitor::visit(Knight *knight)
     for(AvailableMoves::const_iterator it = availableMoves.cbegin(); it != availableMoves.cend(); ++it) {
         for(const Move &move : it.value())  {
             BasicPiece *piece = board->cell(move.x(), move.y())->piece();
-            predictedMoves << move;
-
             if(piece != nullptr && piece->command() == knight->command())
                 continue;
 
+            predictedMoves << move;
             filteredMoves[it.key()] << move;
         }
     }

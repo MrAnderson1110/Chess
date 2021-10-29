@@ -31,6 +31,8 @@ public:
     BasicGridCell *cell(int rowIndex, int columnIndex);
     BasicGridCell *cellUnderMouse(const QPointF &mouse);
     const QList<BasicPiece *> &pieces() const;
+    void erasePiece(BasicPiece *piece);
+    void insertPiece(BasicPiece *piece);
 
     GameMediator *observer() const;
 

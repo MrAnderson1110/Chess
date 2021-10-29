@@ -57,6 +57,7 @@ public:
     const FightMoves &fightMoves() const;
     void setFightMoves(const FightMoves &moves);
     void addFigntMove(const FightPair &move);
+    FightPair getFightPair(const Move &move);
     void removeFightMove(const Move &move);
     void removeFightMove(BasicPiece *piece);
     void removeFightMove(const FightPair &move);

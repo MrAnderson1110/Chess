@@ -63,6 +63,17 @@ void GameMediator::finishMove(BasicPiece *piece)
 
     clearSelection();
     m_moveChecker->updateAvailableMoves(piece, sourcePoint);
+    bool couseToCheck = piece->command() == BasicPiece::White
+            ? appState->checkToWhite()
+            : appState->checkToBlack();
+
+    if(couseToCheck) {
+        m_mover->reset();
+        m_moveChecker->updateAvailableMoves(piece, sourcePoint);
+        return;
+    }
+
+    m_moveChecker->checkOnMate();
     chooseCommand();
 }
 
@@ -86,9 +97,9 @@ void GameMediator::chooseCommand()
 
 bool GameMediator::movable(BasicPiece *piece) const
 {
-    //    if(piece->command() != appState->currentCommand())
-    //        return false;
+//    if(piece->command() != appState->currentCommand())
+//        return false;
 
-    return true;
+    return piece->movable();
 }
 

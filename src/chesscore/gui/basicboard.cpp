@@ -118,6 +118,16 @@ const QList<BasicPiece *> &BasicBoard::pieces() const
     return m_pieces;
 }
 
+void BasicBoard::erasePiece(BasicPiece *piece)
+{
+    m_pieces.removeOne(piece);
+}
+
+void BasicBoard::insertPiece(BasicPiece *piece)
+{
+    m_pieces.append(piece);
+}
+
 bool BasicBoard::inverted() const
 {
     return m_inverted;

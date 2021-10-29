@@ -20,8 +20,6 @@ public:
     void visit(BasicPiece *base) override;
     void visit(Pawn *pawn) override;
 
-    void checkKings(BasicPiece *underFight);
-
 private:
     BasicPiece *m_initiator;
     Move m_prevInitiatorPoint;

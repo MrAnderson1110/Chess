@@ -5,10 +5,9 @@
 
 #include "chesscore_global.h"
 
-class BasicGridCell;
 class BasicPiece;
 class BasicBoard;
-class State;
+class MoveHelper;
 
 class CHESSCORE_EXPORT Mover
 {
@@ -22,12 +21,9 @@ public:
     void reset();
 
 private:
-    State *checkCastling(BasicPiece *piece, const Move &prevPoint);
-    void storePieceToCell(BasicPiece *piece, BasicGridCell *cell);
-
-private:
     BasicBoard *m_board;
     BasicPiece *m_movingPiece;
+    MoveHelper *m_helper;
 };
 
 #endif // MOVER_H

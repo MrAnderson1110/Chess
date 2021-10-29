@@ -1,7 +1,5 @@
 #include "fightvisitor.h"
 
-#include "../appstate.h"
-
 #include <BasicPiece>
 #include <BasicBoard>
 #include <BasicGridCell>
@@ -21,7 +19,6 @@ void FightVisitor::reset(BasicPiece *initiator, const Move &prevInitiatorPoint)
 {
     m_initiator = initiator;
     m_prevInitiatorPoint = prevInitiatorPoint;
-    appState->resetChecks();
 }
 
 void FightVisitor::visit(BasicPiece *base)
@@ -34,7 +31,6 @@ void FightVisitor::visit(BasicPiece *base)
                 if(piece != base && piece->command() != base->command()
                         && move == Move(piece->rowIndex(), piece->columnIndex())) {
                     fightMoves << FightPair(piece, move);
-                    checkKings(piece);
                 }
             }
         }
@@ -46,6 +42,9 @@ void FightVisitor::visit(BasicPiece *base)
 void FightVisitor::visit(Pawn *pawn)
 {
     int direction = pawn->command();
+    if(pawn->board()->inverted())
+        direction *= -1;
+
     int nextRow = pawn->rowIndex() + direction;
     if(nextRow < 0 || nextRow >= 8)
         return;
@@ -61,7 +60,6 @@ void FightVisitor::visit(Pawn *pawn)
             Move move(nextRow, leftCol);
             pawn->addAvailableMove(move, Unspecified);
             pawn->addFigntMove(FightPair(leftenemy, move));
-            checkKings(leftenemy);
         }
     }
 
@@ -73,7 +71,6 @@ void FightVisitor::visit(Pawn *pawn)
             Move move(nextRow, rightCol);
             pawn->addAvailableMove(move, Unspecified);
             pawn->addFigntMove(FightPair(rightenemy, move));
-            checkKings(rightenemy);
         }
     }
 
@@ -90,20 +87,6 @@ void FightVisitor::visit(Pawn *pawn)
         Move move(m_prevInitiatorPoint.x() - direction, m_prevInitiatorPoint.y());
         pawn->addAvailableMove(move, Unspecified);
         pawn->addFigntMove(FightPair(m_initiator, move));
-    }
-}
-
-void FightVisitor::checkKings(BasicPiece *underFight)
-{
-    King *king = dynamic_cast<King *>(underFight);
-    if(!king)
-        return;
-
-    switch (king->command()) {
-    case BasicPiece::White:
-        appState->setCheckToWhite(true);
-    case BasicPiece::Black:
-        appState->setCheckToBlack(true);
     }
 }
 

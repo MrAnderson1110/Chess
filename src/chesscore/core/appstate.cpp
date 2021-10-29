@@ -43,7 +43,7 @@ void AppState::setCheckToBlack(bool newCheckToBlack)
         return;
 
     m_checkToBlack = newCheckToBlack;
-    emit checkToBlackChanged();
+    emit checkToBlackChanged(m_checkToBlack);
 }
 
 bool AppState::checkToWhite() const
@@ -57,7 +57,7 @@ void AppState::setCheckToWhite(bool newCheckToWhite)
         return;
 
     m_checkToWhite = newCheckToWhite;
-    emit checkToWhiteChanged();
+    emit checkToWhiteChanged(m_checkToWhite);
 }
 
 bool AppState::mateToWhite() const
@@ -71,7 +71,7 @@ void AppState::setMateToWhite(bool newMateToWhite)
         return;
 
     m_mateToWhite = newMateToWhite;
-    emit mateToWhiteChanged();
+    emit mateToWhiteChanged(m_mateToWhite);
 }
 
 bool AppState::mateToBlack() const
@@ -85,7 +85,7 @@ void AppState::setMateToBlack(bool newMateToBlack)
         return;
 
     m_mateToBlack = newMateToBlack;
-    emit mateToBlackChanged();
+    emit mateToBlackChanged(m_mateToBlack);
 }
 
 int AppState::currentCommand() const
@@ -99,5 +99,19 @@ void AppState::setCurrentCommand(int newCurrentCommand)
         return;
 
     m_currentCommand = newCurrentCommand;
-    emit currentCommandChanged();
+    emit currentCommandChanged(m_currentCommand);
+}
+
+bool AppState::stalemate() const
+{
+    return m_stalemate;
+}
+
+void AppState::setStalemate(bool newStalemate)
+{
+    if (m_stalemate == newStalemate)
+        return;
+
+    m_stalemate = newStalemate;
+    emit stalemateChanged(m_stalemate);
 }

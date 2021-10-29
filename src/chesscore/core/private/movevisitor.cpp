@@ -8,6 +8,8 @@
 #include <Rook>
 #include <Pawn>
 
+#include <AppState>
+
 MovesVisitor::MovesVisitor()
     : BaseVisitor()
     , Visitor<King>()
@@ -25,8 +27,6 @@ void MovesVisitor::visit(King *king)
     AvailableMoves availableMoves;
     int row = king->rowIndex();
     int column = king->columnIndex();
-
-    Q_ASSERT(!(row < 0 || row >= 8 || column < 0 || column >= 8));
 
     // Top left
     int tempRow = row - 1;
@@ -78,7 +78,11 @@ void MovesVisitor::visit(King *king)
 
     king->setAvailableMoves(availableMoves);
 
-    if(king->moved())
+    bool check = king->command() == BasicPiece::White
+            ? appState->checkToWhite()
+            : appState->checkToBlack();
+
+    if(king->moved() || check)
         return;
 
     bool leftRookMoved = true;
@@ -90,6 +94,7 @@ void MovesVisitor::visit(King *king)
             continue;
 
         if(!rook->moved()) {
+            Q_ASSERT(rook->rowIndex() == king->rowIndex());
             if(rook->columnIndex() == 0)
                 leftRookMoved = false;
             else if(rook->columnIndex() == 7)
@@ -114,10 +119,6 @@ void MovesVisitor::visit(King *king)
 void MovesVisitor::visit(Queen *queen)
 {
     AvailableMoves availableMoves;
-    int row = queen->rowIndex();
-    int column = queen->columnIndex();
-
-    Q_ASSERT(!(row < 0 || row >= 8 || column < 0 || column >= 8));
 
     {
         Rook *fakeRook = new Rook;
@@ -147,8 +148,6 @@ void MovesVisitor::visit(Bishop *bishop)
     int row = bishop->rowIndex();
     int column = bishop->columnIndex();
 
-    Q_ASSERT(row >= 0 && row < 8 && column >= 0 && column < 8);
-
     // По диагонали в верхний правый угол
     for(int r = row - 1, c = column + 1; r >= 0 && c < 8; --r, ++c)
         availableMoves[TopRight] << Move(r, c);
@@ -173,8 +172,6 @@ void MovesVisitor::visit(Knight *knight)
     AvailableMoves availableMoves;
     int row = knight->rowIndex();
     int column = knight->columnIndex();
-
-    Q_ASSERT(!(row < 0 || row >= 8 || column < 0 || column >= 8));
 
     // Левый верхний угол
     int tempRow = row - 1;
@@ -214,7 +211,6 @@ void MovesVisitor::visit(Knight *knight)
     tempCol = column - 2;
     if(tempRow < 8 && tempCol >= 0)
         availableMoves[Unspecified] << Move(tempRow, tempCol);
-
     tempRow = row + 2;
     tempCol = column - 1;
     if(tempRow < 8 && tempCol >= 0)
@@ -228,8 +224,6 @@ void MovesVisitor::visit(Rook *rook)
     AvailableMoves availableMoves;
     int row = rook->rowIndex();
     int column = rook->columnIndex();
-
-    Q_ASSERT(row >= 0 && row < 8 && column >= 0 && column < 8);
 
     {
         // Вниз
@@ -262,8 +256,6 @@ void MovesVisitor::visit(Pawn *pawn)
     AvailableMoves availableMoves;
     int row = pawn->rowIndex();
     int column = pawn->columnIndex();
-
-    Q_ASSERT(row >= 0 && row < 8 && column >= 0 && column < 8);
 
     int direction = pawn->command();
     if(pawn->board()->inverted())

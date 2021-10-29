@@ -7,6 +7,7 @@ HEADERS += \
     $$PWD/mover.h \
     $$PWD/private/fightvisitor.h \
     $$PWD/private/filtervisitor.h \
+    $$PWD/private/movehelper.h \
     $$PWD/private/movevisitor.h \
     $$PWD/private/postfiltervisitor.h \
     $$PWD/selector.h
@@ -19,6 +20,7 @@ SOURCES += \
     $$PWD/mover.cpp \
     $$PWD/private/fightvisitor.cpp \
     $$PWD/private/filtervisitor.cpp \
+    $$PWD/private/movehelper.cpp \
     $$PWD/private/movevisitor.cpp \
     $$PWD/private/postfiltervisitor.cpp \
     $$PWD/selector.cpp
