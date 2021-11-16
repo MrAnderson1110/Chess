@@ -8,7 +8,7 @@ class BasicPiece;
 class State;
 class BasicGridCell;
 
-class MoveHelper
+class CHESSCORE_EXPORT MoveHelper
 {
 public:
     MoveHelper(BasicBoard *board);

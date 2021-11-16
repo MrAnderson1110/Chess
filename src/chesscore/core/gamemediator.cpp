@@ -97,8 +97,8 @@ void GameMediator::chooseCommand()
 
 bool GameMediator::movable(BasicPiece *piece) const
 {
-//    if(piece->command() != appState->currentCommand())
-//        return false;
+    if(piece->command() != appState->currentCommand())
+        return false;
 
     return piece->movable();
 }

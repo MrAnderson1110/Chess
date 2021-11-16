@@ -23,26 +23,23 @@ MoveHelper::~MoveHelper()
 
 BasicPiece *MoveHelper::fight(BasicPiece *initiator, BasicGridCell *fighted)
 {
-    if(!fighted->piece())
-        return nullptr;
-
-    if(fighted->piece()->type() == BasicPiece::King)
-        return nullptr;
-
     Move fightedMove(fighted->rowIndex(), fighted->columnIndex());
     if(!initiator->fightMovesContains(fightedMove))
         return nullptr;
 
-    BasicPiece *fightPiece = initiator->getFightPair(fightedMove).first;
-    m_pieces.append(fightPiece);
-    m_board->erasePiece(fightPiece);
-    fightPiece->setVisible(false);
-    fightPiece->setRowIndex(-1);
-    fightPiece->setColumnIndex(-1);
+    BasicPiece *fightedPiece = initiator->getFightPair(fightedMove).first;
+    if(fightedPiece->type() == BasicPiece::King)
+        return nullptr;
+
+    m_pieces.append(fightedPiece);
+    m_board->erasePiece(fightedPiece);
+    fightedPiece->setVisible(false);
+    fightedPiece->setRowIndex(-1);
+    fightedPiece->setColumnIndex(-1);
     BasicGridCell *cell = m_board->cell(fightedMove.x(), fightedMove.y());
     cell->setPiece(nullptr);
 
-    return fightPiece;
+    return fightedPiece;
 }
 
 void MoveHelper::checkCastling(BasicPiece *initiator, const Move &prevPoint)

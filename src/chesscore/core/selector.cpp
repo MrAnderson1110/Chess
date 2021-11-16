@@ -41,7 +41,8 @@ void Selector::updateSelection(BasicPiece *initiator)
     for(const FightPair &fightMove : initiator->fightMoves()) {
         const Move &move = fightMove.second;
         BasicGridCell *cell = m_board->cell(move.x(), move.y());
-        Q_ASSERT(m_selectionList.contains(cell));
+        if(!m_selectionList.contains(cell))
+            continue;
         cell->setUnderFire(true);
     }
 }
