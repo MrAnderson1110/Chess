@@ -27,6 +27,8 @@ private:
     Move m_to;
 };
 
+#include <QObject>
+
 class CHESSCORE_EXPORT Snapshot : public QObject
 {
     Q_OBJECT

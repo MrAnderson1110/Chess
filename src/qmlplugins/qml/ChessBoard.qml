@@ -72,8 +72,8 @@ BasicBoard {
         anchors.fill: parent
         RowLayout {
             id: rowIndexes
-            Layout.column: 2
-            Layout.row: 1
+            Layout.column: 1
+            Layout.row: 0
             Layout.rightMargin: generalMargin
             spacing: 1
             Repeater {
@@ -91,8 +91,8 @@ BasicBoard {
         ColumnLayout {
             id: columnIndexes
             spacing: 1
-            Layout.column: 1
-            Layout.row: 2
+            Layout.column: 0
+            Layout.row: 1
             Layout.bottomMargin: generalMargin
             Repeater {
                 model: 8
@@ -112,8 +112,8 @@ BasicBoard {
             rows: 8
             columnSpacing: 1
             rowSpacing: 1
-            Layout.column: 2
-            Layout.row: 2
+            Layout.column: 1
+            Layout.row: 1
             Layout.rightMargin: generalMargin
             Layout.bottomMargin: generalMargin
             Repeater {

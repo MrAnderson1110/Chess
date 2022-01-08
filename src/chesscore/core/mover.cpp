@@ -52,7 +52,8 @@ void Mover::finishMove(BasicPiece *piece)
 
     Move prevPoint(piece->rowIndex(), piece->columnIndex());
     m_helper->storePieceToCell(piece, cell);
-    m_helper->checkCastling(piece, prevPoint);
+    // NOTE перенесено в MoveHalper::storePieceToCell(...)
+//    m_helper->checkCastling(piece, prevPoint);
 
     m_movingPiece = nullptr;
 }

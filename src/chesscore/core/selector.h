@@ -2,6 +2,7 @@
 #define SELECTOR_H
 
 #include <QList>
+#include <QRectF>
 
 #include "chesscore_global.h"
 

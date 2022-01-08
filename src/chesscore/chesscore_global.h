@@ -4,6 +4,7 @@
 #include <QtGlobal>
 #include <QPoint>
 #include <QList>
+#include <QHash>
 
 class BasicPiece;
 

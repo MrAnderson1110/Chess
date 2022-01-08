@@ -61,15 +61,15 @@ void MoveHelper::checkCastling(BasicPiece *initiator, const Move &prevPoint)
     appHistory->push(snap);
 }
 
-void MoveHelper::storePieceToCell(BasicPiece *piece, BasicGridCell *cell, bool addHistory)
+void MoveHelper::storePieceToCell(BasicPiece *piece, BasicGridCell *cell, bool addToHistory)
 {
     Q_ASSERT(piece != nullptr && cell != nullptr);
 
     BasicPiece *fighted = fight(piece, cell);
+    Move from(piece->rowIndex(), piece->columnIndex());
 
-    if(addHistory) {
+    if(addToHistory) {
         Snapshot *snap = new Snapshot;
-        Move from(piece->rowIndex(), piece->columnIndex());
         Move to(cell->rowIndex(), cell->columnIndex());
         bool moved = false;
         King *king = dynamic_cast<King *>(piece);
@@ -100,6 +100,12 @@ void MoveHelper::storePieceToCell(BasicPiece *piece, BasicGridCell *cell, bool a
     piece->setGeometry(cell->geometry());
     cell->setPiece(piece);
     piece->setParentItem(cell);
+
+    King *king = dynamic_cast<King *>(piece);
+    if(king != nullptr) {
+        king->setMoved(false);
+        checkCastling(king, from);
+    }
 }
 
 void MoveHelper::resetMove()

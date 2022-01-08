@@ -14,11 +14,11 @@ public:
     MoveHelper(BasicBoard *board);
     ~MoveHelper();
 
-    void checkCastling(BasicPiece *initiator, const Move &prevPoint);
-    void storePieceToCell(BasicPiece *piece, BasicGridCell *cell, bool addHistory = true);
+    void storePieceToCell(BasicPiece *piece, BasicGridCell *cell, bool addToHistory = true);
     void resetMove();
 
 private:
+    void checkCastling(BasicPiece *initiator, const Move &prevPoint);
     void resetFight(BasicPiece *defeated, const Move &prevMove);
     State *castling(BasicPiece *piece, const Move &prevPoint);
     BasicPiece *fight(BasicPiece *initiator, BasicGridCell *fighted);
